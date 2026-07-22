@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Predicción del Rendimiento Estudiantil</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="card">
+      <!-- ===================================== -->
+      <!-- CABECERA -->
+      <!-- ===================================== -->
+
+      <div class="header">
+        <div class="logo">🎓</div>
+
+        <div>
+          <h1>Predicción del Rendimiento Estudiantil</h1>
+
+          <p>
+            Sistema basado en Inteligencia Artificial mediante
+            <strong>Random Forest</strong> para predecir la aprobación de un
+            estudiante en Matemáticas.
+          </p>
+          <p class="mandatory-notice">
+            ⚠️ <strong>Nota:</strong> Todos los campos son obligatorios.
+          </p>
+        </div>
+      </div>
+
+      <form id="studentForm">
+        <!-- ===================================== -->
+        <!-- INFORMACIÓN PERSONAL -->
+        <!-- ===================================== -->
+
+        <div class="section">
+          <h2>👤 Información personal</h2>
+
+          <div class="grid">
+            <div class="field">
+              <label>Sexo</label>
+
+              <div class="toggle-group">
+                <input type="radio" id="sexoF" name="sex" value="F" checked />
+                <label for="sexoF" class="toggle-btn">Femenino</label>
+
+                <input type="radio" id="sexoM" name="sex" value="M" />
+                <label for="sexoM" class="toggle-btn">Masculino</label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label> Edad </label>
+
+              <input type="number" id="age" min="15" max="22" placeholder="Ej. 17" required />
+            </div>
+
+            <div class="field">
+              <label>Tipo de domicilio</label>
+
+              <div class="toggle-group">
+                <input type="radio" id="addressU" name="address" value="U" checked />
+                <label for="addressU" class="toggle-btn">🏙️ Urbano</label>
+
+                <input type="radio" id="addressR" name="address" value="R" />
+                <label for="addressR" class="toggle-btn">🌄 Rural</label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Tamaño de la familia</label>
+
+              <div class="toggle-group">
+                <input type="radio" id="famsize1" name="famsize" value="LE3" checked />
+                <label for="famsize1" class="toggle-btn">
+                  ≤ 3 integrantes
+                </label>
+
+                <input type="radio" id="famsize2" name="famsize" value="GT3" />
+                <label for="famsize2" class="toggle-btn">
+                  > 3 integrantes
+                </label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Estado de convivencia de los padres</label>
+
+              <div class="toggle-group">
+                <input type="radio" id="pstatusT" name="Pstatus" value="T" checked />
+                <label for="pstatusT" class="toggle-btn"> Juntos </label>
+
+                <input type="radio" id="pstatusA" name="Pstatus" value="A" />
+                <label for="pstatusA" class="toggle-btn"> Separados </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================================== -->
+        <!-- INFORMACIÓN FAMILIAR -->
+        <!-- ===================================== -->
+
+        <div class="section">
+          <h2>🏠 Información familiar</h2>
+
+          <div class="grid">
+            <div class="field">
+              <label> Nivel educativo de la madre </label>
+
+              <select id="Medu">
+                <option value="0">Ninguno</option>
+
+                <option value="1">Educación primaria</option>
+
+                <option value="2">De 5.º a 9.º grado</option>
+
+                <option value="3">Educación secundaria</option>
+
+                <option value="4">Educación superior</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label> Nivel educativo del padre </label>
+
+              <select id="Fedu">
+                <option value="0">Ninguno</option>
+
+                <option value="1">Educación primaria</option>
+
+                <option value="2">De 5.º a 9.º grado</option>
+
+                <option value="3">Educación secundaria</option>
+
+                <option value="4">Educación superior</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <!-- ===================================== -->
+        <!-- INFORMACIÓN ACADÉMICA -->
+        <!-- ===================================== -->
+
+        <div class="section">
+          <h2>📚 Información académica</h2>
+
+          <div class="grid">
+            <div class="field">
+              <label>Tiempo de viaje</label>
+
+              <select id="traveltime">
+                <option value="1">&lt;15 minutos</option>
+                <option value="2">15 a 30 minutos</option>
+                <option value="3">30 minutos a 1 hora</option>
+                <option value="4">&gt;1 hora</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Tiempo de estudio semanal</label>
+
+              <select id="studytime">
+                <option value="1">&lt;2 horas</option>
+                <option value="2">2 a 5 horas</option>
+                <option value="3">5 a 10 horas</option>
+                <option value="4">&gt;10 horas</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Materias reprobadas</label>
+
+              <select id="failures">
+                <option value="0">Ninguna</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4 o más</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Número de faltas</label>
+
+              <input type="number" id="absences" min="0" max="100" placeholder="Ej. 0" required />
+            </div>
+
+            <div class="field">
+              <label>Nota G1 (0 a 20)</label>
+
+              <input type="number" id="G1" min="0" max="20" placeholder="0 a 20" required />
+            </div>
+
+            <div class="field">
+              <label>Nota G2 (0 a 20)</label>
+
+              <input type="number" id="G2" min="0" max="20" placeholder="0 a 20" required />
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================================== -->
+        <!-- HÁBITOS Y BIENESTAR -->
+        <!-- ===================================== -->
+
+        <div class="section">
+          <h2>❤️ Hábitos y bienestar</h2>
+
+          <div class="grid">
+            <div class="field">
+              <label>Apoyo escolar</label>
+
+              <div class="toggle-group">
+                <input type="radio" id="schoolsupYes" name="schoolsup" value="yes" checked />
+                <label for="schoolsupYes" class="toggle-btn">Sí</label>
+
+                <input type="radio" id="schoolsupNo" name="schoolsup" value="no" />
+                <label for="schoolsupNo" class="toggle-btn">No</label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Clases particulares</label>
+
+              <div class="toggle-group">
+                <input type="radio" id="paidYes" name="paid" value="yes" checked />
+                <label for="paidYes" class="toggle-btn">Sí</label>
+
+                <input type="radio" id="paidNo" name="paid" value="no" />
+                <label for="paidNo" class="toggle-btn"> No</label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Desea estudios superiores</label>
+
+              <div class="toggle-group">
+                <input type="radio" id="higherYes" name="higher" value="yes" checked />
+                <label for="higherYes" class="toggle-btn">Sí</label>
+
+                <input type="radio" id="higherNo" name="higher" value="no" />
+                <label for="higherNo" class="toggle-btn">No</label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Internet en casa</label>
+
+              <div class="toggle-group">
+                <input type="radio" id="internetYes" name="internet" value="yes" checked />
+                <label for="internetYes" class="toggle-btn">Sí</label>
+
+                <input type="radio" id="internetNo" name="internet" value="no" />
+                <label for="internetNo" class="toggle-btn">No</label>
+              </div>
+            </div>
+            <div class="field">
+              <label>Relación sentimental</label>
+
+              <div class="toggle-group">
+                <input type="radio" id="romanticYes" name="romantic" value="yes" checked />
+                <label for="romanticYes" class="toggle-btn">Sí</label>
+
+                <input type="radio" id="romanticNo" name="romantic" value="no" />
+                <label for="romanticNo" class="toggle-btn">No</label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Relación familiar</label>
+
+              <select id="famrel">
+                <option value="1">Muy mala</option>
+                <option value="2">Mala</option>
+                <option value="3">Regular</option>
+                <option value="4">Buena</option>
+                <option value="5">Excelente</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Tiempo libre</label>
+
+              <select id="freetime">
+                <option value="1">Muy bajo</option>
+                <option value="2">Bajo</option>
+                <option value="3">Moderado</option>
+                <option value="4">Alto</option>
+                <option value="5">Muy alto</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Salidas con amigos</label>
+
+              <select id="goout">
+                <option value="1">Muy baja</option>
+                <option value="2">Baja</option>
+                <option value="3">Moderada</option>
+                <option value="4">Alta</option>
+                <option value="5">Muy alta</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Alcohol entre semana</label>
+
+              <select id="Dalc">
+                <option value="1">Muy bajo</option>
+                <option value="2">Bajo</option>
+                <option value="3">Moderado</option>
+                <option value="4">Alto</option>
+                <option value="5">Muy alto</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Alcohol fin de semana</label>
+
+              <select id="Walc">
+                <option value="1">Muy bajo</option>
+                <option value="2">Bajo</option>
+                <option value="3">Moderado</option>
+                <option value="4">Alto</option>
+                <option value="5">Muy alto</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Estado de salud</label>
+
+              <select id="health">
+                <option value="1">Muy malo</option>
+                <option value="2">Malo</option>
+                <option value="3">Regular</option>
+                <option value="4">Bueno</option>
+                <option value="5">Excelente</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================================== -->
+        <!-- BOTONES -->
+        <!-- ===================================== -->
+
+        <div class="buttons">
+          <button type="button" id="btnPredecir" class="primary">
+            🔍 Predecir
+          </button>
+
+          <button type="reset" class="secondary">🗑️ Limpiar</button>
+        </div>
+
+        <div id="resultado" class="resultado"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================================== -->
+  <!-- MODAL DE RESULTADO -->
+  <!-- ===================================== -->
+  <div id="modalResultado" class="modal">
+    <div class="modal-content">
+      <span id="closeModal" class="close-btn">&times;</span>
+      <div id="modalBody"></div>
+      <div style="margin-top: 20px;">
+        <button type="button" id="btnCerrarModal" class="primary">Aceptar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================== -->
+  <!-- CONTENEDOR DE TOAST NOTIFICATIONS -->
+  <!-- ===================================== -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
